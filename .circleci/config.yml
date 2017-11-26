@@ -23,6 +23,9 @@ jobs:
       - run:
           name: Tests
           command: dotnet test -v normal --no-build src/**/*.Tests.csproj
+      - run:
+          name: Codecov
+          command: bash <(curl -s https://codecov.io/bash) -t 32266071-966d-40e1-963c-2aed09047656    
 workflows:
   version: 1
   build_and_test:
