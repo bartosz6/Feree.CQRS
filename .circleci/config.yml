@@ -22,7 +22,7 @@ jobs:
           at: .
       - run:
           name: Tests
-          command: dotnet test -v normal --no-build --no-restore src/**/*.Tests.csproj
+          command: dotnet test -v normal --no-build src/**/*.Tests.csproj
 workflows:
   version: 1
   build_and_test:
