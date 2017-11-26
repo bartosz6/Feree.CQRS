@@ -17,7 +17,7 @@ jobs:
           command: dotnet test -v normal --no-build --no-restore src/**/*.Tests.csproj
 workflows:
   version: 1
-  build-and-test:
+  build_and_test:
     jobs:
       - build
       - test:
