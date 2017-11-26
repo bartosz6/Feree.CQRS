@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.0.0
+MinimumVisualStudioVersion = 10.0.0.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRS.Core", "CQRS.Core/CQRS.Core.csproj", "{E9970F93-FE27-42C0-90DC-D049F6DCB7C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRS.Core.Tests", "CQRS.Core.Tests\CQRS.Core.Tests.csproj", "{E31278BB-36AF-4D16-852C-95EC42038237}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E9970F93-FE27-42C0-90DC-D049F6DCB7C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9970F93-FE27-42C0-90DC-D049F6DCB7C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9970F93-FE27-42C0-90DC-D049F6DCB7C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9970F93-FE27-42C0-90DC-D049F6DCB7C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E31278BB-36AF-4D16-852C-95EC42038237}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E31278BB-36AF-4D16-852C-95EC42038237}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E31278BB-36AF-4D16-852C-95EC42038237}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E31278BB-36AF-4D16-852C-95EC42038237}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
