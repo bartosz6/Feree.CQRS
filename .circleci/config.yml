@@ -3,16 +3,18 @@ jobs:
   build:
     docker:
       - image: microsoft/dotnet:sdk
-    working_directory: ~/build
+    working_directory: /build
     steps:
       - checkout
       - run:
           name: Build solution
           command: dotnet build src
+      - store_artifacts:
+          path: /build
   test:
     docker:
       - image: microsoft/dotnet:sdk
-    working_directory: ~/build
+    working_directory: /build
     steps:
       - run:
           name: Tests
