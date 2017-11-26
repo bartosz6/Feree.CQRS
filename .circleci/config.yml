@@ -10,14 +10,14 @@ jobs:
           name: Build solution
           command: dotnet build src
       - persist_to_workspace:
-          root: /
+          root: .
   test:
     working_directory: ~/build
     docker:
       - image: microsoft/dotnet:sdk
     steps:
       - attach_workspace:
-          at: /
+          at: .
       - run:
           name: Tests
           command: dotnet test -v normal --no-build --no-restore src/**/*.Tests.csproj
