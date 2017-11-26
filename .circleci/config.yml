@@ -1,21 +1,23 @@
 version: 1
 jobs:
   build:
+    working_directory: /tmp
     docker:
       - image: microsoft/dotnet:sdk
-    working_directory: /build
     steps:
       - checkout
       - run:
           name: Build solution
           command: dotnet build src
-      - store_artifacts:
-          path: /build
+      - persist_to_workspace:
+          root: /
   test:
+    working_directory: /tmp
     docker:
       - image: microsoft/dotnet:sdk
-    working_directory: /build
     steps:
+      - attach_workspace:
+          at: /tmp
       - run:
           name: Tests
           command: dotnet test -v normal --no-build --no-restore src/**/*.Tests.csproj
