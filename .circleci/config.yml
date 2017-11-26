@@ -6,8 +6,20 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Build
+          name: Build solution
           command: dotnet build src
+  test:
+    docker:
+      - image: microsoft/dotnet:sdk
+    steps:
       - run:
           name: Tests
           command: dotnet test -v normal --no-build --no-restore src/**/*.Tests.csproj
+workflows:
+  version: 1
+  build-and-test:
+    jobs:
+      - build
+      - test:
+        requires:
+          - build
