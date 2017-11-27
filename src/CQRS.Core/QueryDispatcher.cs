@@ -6,11 +6,11 @@ using CQRS.Core.Markers;
 
 namespace CQRS.Core
 {
-    public class BaseQueryDispatcher : IQueryDispatcher
+    public class QueryDispatcher : IQueryDispatcher
     {
         private readonly IEnumerable<IQueryHandler> _queryHandlers;
 
-        public BaseQueryDispatcher(params IQueryHandler[] queryHandlers)
+        public QueryDispatcher(params IQueryHandler[] queryHandlers)
         {
             _queryHandlers = queryHandlers;
         }
