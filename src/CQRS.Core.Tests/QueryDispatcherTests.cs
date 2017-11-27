@@ -76,9 +76,9 @@ namespace CQRS.Core.Tests
             var dispatcher = new QueryDispatcher(handler.Object);
             handler.Setup(h => h.HandleAsync(query.Object)).Returns(someStringTask);
 
-            var result = await dispatcher.DispatchAsync<IQuery, string>(query.Object);
+            var result = await dispatcher.DispatchAsync<IQuery, string>(query.Object).ConfigureAwait(false);
 
-            Assert.Equal(await someStringTask, result);
+            Assert.Equal(await someStringTask.ConfigureAwait(false), result);
         }
 
         [Fact]
@@ -88,7 +88,7 @@ namespace CQRS.Core.Tests
 
             var dispatcher = new QueryDispatcher();
 
-            await Assert.ThrowsAsync<InvalidOperationException>(() => dispatcher.DispatchAsync<IQuery, string>(query.Object));
+            await Assert.ThrowsAsync<InvalidOperationException>(() => dispatcher.DispatchAsync<IQuery, string>(query.Object)).ConfigureAwait(false);
         }
 
         [Fact]
@@ -100,7 +100,7 @@ namespace CQRS.Core.Tests
 
             var dispatcher = new QueryDispatcher(handler1.Object, handler2.Object);
 
-            await Assert.ThrowsAsync<InvalidOperationException>(() => dispatcher.DispatchAsync<IQuery, string>(query.Object));
+            await Assert.ThrowsAsync<InvalidOperationException>(() => dispatcher.DispatchAsync<IQuery, string>(query.Object)).ConfigureAwait(false);
         }
     }
 }
