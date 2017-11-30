@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRS.Core", "CQRS.Core/CQRS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRS.Core.Tests", "CQRS.Core.Tests\CQRS.Core.Tests.csproj", "{E31278BB-36AF-4D16-852C-95EC42038237}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRS.Performance.Tests", "CQRS.Performance.Tests\CQRS.Performance.Tests.csproj", "{EDD32D8A-1F2D-4111-8D68-8139E244D678}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{E31278BB-36AF-4D16-852C-95EC42038237}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E31278BB-36AF-4D16-852C-95EC42038237}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E31278BB-36AF-4D16-852C-95EC42038237}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDD32D8A-1F2D-4111-8D68-8139E244D678}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDD32D8A-1F2D-4111-8D68-8139E244D678}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDD32D8A-1F2D-4111-8D68-8139E244D678}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDD32D8A-1F2D-4111-8D68-8139E244D678}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
