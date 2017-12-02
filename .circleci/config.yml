@@ -30,7 +30,7 @@ jobs:
       steps:
         - run:
             name: Benchmark
-            command: dotnet run -c Release src/CQRS.Core.Performance.Tests/
+            command: dotnet run -c Release src/CQRS.Performance.Tests/
 workflows:
   version: 1
   build_and_test:
