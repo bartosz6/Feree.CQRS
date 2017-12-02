@@ -23,11 +23,22 @@ jobs:
       - run:
           name: Tests
           command: dotnet test -v normal --no-build src/CQRS.Core.Tests/
+  performance tests:
+      working_directory: ~/build
+      docker:
+        - image: microsoft/dotnet:sdk
+      steps:
+        - run:
+            name: Benchmark
+            command: dotnet run -c Release src/CQRS.Core.Performance.Tests/
 workflows:
   version: 1
   build_and_test:
     jobs:
       - build
       - unit tests:
+          requires:
+            - build
+      - performance tests:
           requires:
             - build
