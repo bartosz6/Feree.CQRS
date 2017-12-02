@@ -28,6 +28,8 @@ jobs:
       docker:
         - image: microsoft/dotnet:sdk
       steps:
+        - attach_workspace:
+            at: .
         - run:
             name: Benchmark
             command: dotnet run -c Release src/CQRS.Performance.Tests/
