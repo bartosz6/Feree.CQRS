@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using CQRS.Core.Markers;
 
@@ -15,16 +14,19 @@ namespace CQRS.Core
         {
             _queryHandlers = new HashSet<IQueryHandler>(queryHandlers);
         }
-        
+
         [DebuggerStepThrough]
         public TResult Dispatch<TQuery, TResult>(TQuery query) where TQuery : IQuery
         {
             foreach (var queryHandler in _queryHandlers)
             {
                 if (queryHandler is IQueryHandler<TQuery, TResult> han)
+                {
                     return han.Handle(query);
+                }
             }
-            throw new InvalidOperationException($"query handler for query<{typeof(TQuery).Name}, {typeof(TResult).Name}> not found");
+            throw new InvalidOperationException(
+                $"query handler for query<{typeof(TQuery).Name}, {typeof(TResult).Name}> not found");
         }
 
         [DebuggerStepThrough]
