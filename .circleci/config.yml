@@ -28,6 +28,7 @@ jobs:
     docker:
       - image: microsoft/dotnet:sdk
     steps:
+      - run: apt-get install -y sudo
       - run:
           name: Benchmark
           command: sudo dotnet run -c Release --project src/CQRS.Performance.Tests/
