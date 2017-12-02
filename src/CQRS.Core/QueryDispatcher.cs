@@ -28,8 +28,7 @@ namespace CQRS.Core
                         ? throw new ArgumentException($"Query handler for {x.Key.Name} has been already registered.")
                         : x.AsEnumerable())
                     .SelectMany(_ => _)
-                    .ToDictionary(key => key.queryType, value => value.handler)
-            );
+                    .ToDictionary(key => key.queryType, value => value.handler));
         }
 
         [DebuggerStepThrough]
