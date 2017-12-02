@@ -10,7 +10,7 @@ namespace CQRS.Performance.Tests
     
     internal abstract class QueryAsyncHandler<T> : IAsyncQueryHandler<T, byte> where T : IQuery
     {
-        public Task<byte> Handle(T query) => new TaskFactory().StartNew(() => (byte)0);
+        public Task<byte> Handle(T query) => null;
     }
     
     internal class DumbClasses
