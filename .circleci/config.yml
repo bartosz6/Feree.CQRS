@@ -13,7 +13,7 @@ jobs:
           root: .
           paths: 
             - src/*
-  test:
+  unit tests:
     working_directory: ~/build
     docker:
       - image: microsoft/dotnet:sdk
@@ -22,12 +22,12 @@ jobs:
           at: .
       - run:
           name: Tests
-          command: dotnet test -v normal --no-build src/**/*.Tests.csproj
+          command: dotnet test -v normal --no-build src/CQRS.Core.Tests/
 workflows:
   version: 1
   build_and_test:
     jobs:
       - build
-      - test:
+      - unit tests:
           requires:
             - build
