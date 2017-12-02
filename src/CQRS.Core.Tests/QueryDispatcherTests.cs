@@ -7,65 +7,69 @@ namespace CQRS.Core.Tests
 {
     public class QueryDispatcherTests
     {
+        private readonly QueryDispatcher _queryDispatcher;
+        private readonly Mock<IQueryHandler<Query3, string>> _handlerMock;
+        private readonly Mock<IAsyncQueryHandler<Query4, string>> _asyncHandlerMock;
+
+        public QueryDispatcherTests()
+        {
+            _handlerMock = new Mock<IQueryHandler<Query3, string>>();
+            _asyncHandlerMock = new Mock<IAsyncQueryHandler<Query4, string>>();
+            _queryDispatcher = new QueryDispatcher(
+                _handlerMock.Object, 
+                new Handler1(), 
+                new Handler2(), 
+                _asyncHandlerMock.Object);
+        }
+
         [Fact]
         public void Dispatch_given_query_should_handle_with_proper_handler()
         {
-            var query = new Mock<IQuery>();
-            var handler = new Mock<IQueryHandler<IQuery, string>>();
-            var dispatcher = new QueryDispatcher(handler.Object);
+            var query3 = new Query3();
+            
+            _queryDispatcher.Dispatch<Query3, string>(query3);
 
-            dispatcher.Dispatch<IQuery, string>(query.Object);
-
-            handler.Verify(h => h.Handle(query.Object), Times.Once);
+            _handlerMock.Verify(h => h.Handle(query3), Times.Once);
         }
 
         [Fact]
         public void Dispatch_given_query_should_return_value_from_handler()
         {
-            var query = new Mock<IQuery>();
-            var handler = new Mock<IQueryHandler<IQuery, string>>();
-            var someString = "some string";
-            var dispatcher = new QueryDispatcher(handler.Object);
-            handler.Setup(h => h.Handle(query.Object)).Returns(someString);
+            var result = _queryDispatcher.Dispatch<Query1, byte>(new Query1());
 
-            var result = dispatcher.Dispatch<IQuery, string>(query.Object);
-
-            Assert.Equal(someString, result);
+            Assert.Equal(1, result);
         }
 
         [Fact]
         public void Dispatch_given_query_when_no_query_handler_should_throw_exception()
         {
-            var query = new Mock<IQuery>();
-
-            var dispatcher = new QueryDispatcher();
-
-            Assert.Throws<InvalidOperationException>(() => dispatcher.Dispatch<IQuery, string>(query.Object));
+            Assert.Throws<InvalidOperationException>(() => _queryDispatcher.Dispatch<QueryNoHandler, string>(new QueryNoHandler()));
         }
 
-        [Fact]
-        public void Dispatch_given_query_when_more_than_one_query_handler_should_pick_first()
-        {
-            var query = new Mock<IQuery>();
-            var handler1 = new Mock<IQueryHandler<IQuery, string>>();
-            var handler2 = new Mock<IQueryHandler<IQuery, string>>();
-
-            var dispatcher = new QueryDispatcher(handler1.Object, handler2.Object);
-            dispatcher.Dispatch<IQuery, string>(query.Object);
-            
-            handler1.Verify(h => h.Handle(query.Object), Times.Once);
-        }
-        
         [Fact]
         public async Task DispatchAsync_given_query_should_handle_with_sync_dispatch_encapsuladed_by_task()
         {
-            var query = new Mock<IQuery>();
-            var handler = new Mock<IAsyncQueryHandler<IQuery, string>>();
-            var dispatcher = new QueryDispatcher(handler.Object);
+            var query4 = new Query4();
+            
+            await _queryDispatcher.DispatchAsync<Query4, string>(query4);
 
-            await dispatcher.DispatchAsync<IQuery, string>(query.Object);
+            _asyncHandlerMock.Verify(h => h.Handle(query4), Times.Once);
+        }
 
-            handler.Verify(h => h.Handle(query.Object), Times.Once);
+        public class Query1 : IQuery {}
+        public class Query2 : IQuery {}
+        public class Query3 : IQuery {}
+        public class Query4 : IQuery {}
+        public class QueryNoHandler : IQuery {}
+
+        public class Handler1 : IQueryHandler<Query1, byte>
+        {
+            public byte Handle(Query1 query) => 1;
+        }
+        
+        public class Handler2 : IQueryHandler<Query2, byte>
+        {
+            public byte Handle(Query2 query) => 2;
         }
     }
 }

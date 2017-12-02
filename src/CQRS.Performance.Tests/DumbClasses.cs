@@ -52,8 +52,6 @@ namespace CQRS.Performance.Tests
         internal class QueryHandler8 : QueryHandler<Query8> {}
 
         internal class QueryHandler9 : QueryHandler<Query9> {}
-
-        internal class QueryHandler10 : QueryHandler<Query10> {}
         
         internal class AsyncQueryHandler1 : QueryAsyncHandler<Query10> {}
     }
