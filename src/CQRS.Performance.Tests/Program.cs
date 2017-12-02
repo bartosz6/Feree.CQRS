@@ -22,10 +22,16 @@ namespace CQRS.Performance.Tests
             BenchmarkRunner.Run<Program>();
         }
 
-        [Benchmark(Description = "Dispatch query, 1 out of 10")]
+        [Benchmark(Description = "Dispatch sync, 1 out of 10")]
         public void DispatchTest()
         {
             _queryDispatcher.Dispatch<DumbClasses.Query6, byte>(new DumbClasses.Query6());
+        }
+
+        [Benchmark(Description = "Dispatch async, 1 out of 10")]
+        public void DispatchAsyncTest()
+        {
+            _queryDispatcher.DispatchAsync<DumbClasses.Query10, byte>(new DumbClasses.Query10());
         }
 
         public Program()
@@ -40,6 +46,7 @@ namespace CQRS.Performance.Tests
                 new DumbClasses.QueryHandler7(),
                 new DumbClasses.QueryHandler8(),
                 new DumbClasses.QueryHandler9(),
+                new DumbClasses.AsyncQueryHandler1(),
                 new DumbClasses.QueryHandler10()
                 );
         }

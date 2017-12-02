@@ -1,10 +1,16 @@
-﻿using CQRS.Core;
+﻿using System.Threading.Tasks;
+using CQRS.Core;
 
 namespace CQRS.Performance.Tests
 {
     internal abstract class QueryHandler<T> : IQueryHandler<T, byte> where T : IQuery
     {
         public byte Handle(T query) => 0;
+    }
+    
+    internal abstract class QueryAsyncHandler<T> : IAsyncQueryHandler<T, byte> where T : IQuery
+    {
+        public Task<byte> Handle(T query) => new TaskFactory().StartNew(() => (byte)0);
     }
     
     internal class DumbClasses
@@ -48,5 +54,7 @@ namespace CQRS.Performance.Tests
         internal class QueryHandler9 : QueryHandler<Query9> {}
 
         internal class QueryHandler10 : QueryHandler<Query10> {}
+        
+        internal class AsyncQueryHandler1 : QueryAsyncHandler<Query10> {}
     }
 }
