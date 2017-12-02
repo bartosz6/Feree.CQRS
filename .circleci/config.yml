@@ -28,6 +28,8 @@ jobs:
     docker:
       - image: microsoft/dotnet:sdk
     steps:
+      - attach_workspace:
+          at: .
       - run: apt-get update && apt-get install -y sudo
       - run:
           name: Benchmark
