@@ -1,4 +1,4 @@
-﻿namespace CQRS.Core
+﻿namespace CQRS.Core.Query
 {
     public interface IQuery {}
 }

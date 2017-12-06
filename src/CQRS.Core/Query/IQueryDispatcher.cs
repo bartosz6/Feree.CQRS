@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace CQRS.Core
+namespace CQRS.Core.Query
 {
     public interface IQueryDispatcher
     {

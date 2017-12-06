@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using CQRS.Core.Markers;
 
-namespace CQRS.Core
+namespace CQRS.Core.Query
 {
     public class QueryDispatcher : IQueryDispatcher
     {
@@ -18,14 +18,14 @@ namespace CQRS.Core
             _queryHandlersDictionary = new ReadOnlyDictionary<Type, IQueryHandler>(
                 queryHandlers
                     .Select(handler =>
-                        handler.GetType().GetTypeInfo().ImplementedInterfaces
+                        IntrospectionExtensions.GetTypeInfo(handler.GetType()).ImplementedInterfaces
                             .Where(@interface => @interface.GUID == interfaceId)
                             .Select(@interface => @interface.GetTypeInfo().GenericTypeArguments.First())
                             .Select(queryType => (queryType, handler)))
                     .SelectMany(_ => _)
                     .GroupBy(x => x.queryType)
                     .Select(x => x.Count() > 1
-                        ? throw new ArgumentException($"Query handler for {x.Key.Name} has been already registered.")
+                        ? throw new ArgumentException($"query handler for {x.Key.Name} has been already registered.")
                         : x.AsEnumerable())
                     .SelectMany(_ => _)
                     .ToDictionary(key => key.queryType, value => value.handler));
