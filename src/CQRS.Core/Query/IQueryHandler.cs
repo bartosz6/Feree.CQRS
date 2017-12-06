@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using CQRS.Core.Markers;
 
 namespace CQRS.Core.Query
 {
@@ -11,4 +10,6 @@ namespace CQRS.Core.Query
     {
         TResult Handle(TQuery query);
     }
+    
+    public interface IQueryHandler {}
 }

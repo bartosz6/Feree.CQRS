@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using CQRS.Core.Markers;
 
 namespace CQRS.Core.Query
 {
@@ -18,7 +17,7 @@ namespace CQRS.Core.Query
             _queryHandlersDictionary = new ReadOnlyDictionary<Type, IQueryHandler>(
                 queryHandlers
                     .Select(handler =>
-                        IntrospectionExtensions.GetTypeInfo(handler.GetType()).ImplementedInterfaces
+                        handler.GetType().GetTypeInfo().ImplementedInterfaces
                             .Where(@interface => @interface.GUID == interfaceId)
                             .Select(@interface => @interface.GetTypeInfo().GenericTypeArguments.First())
                             .Select(queryType => (queryType, handler)))

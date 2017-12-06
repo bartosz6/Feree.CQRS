@@ -7,7 +7,6 @@ using BenchmarkDotNet.Exporters;
 using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Loggers;
 using BenchmarkDotNet.Running;
-using CQRS.Core;
 using CQRS.Core.Query;
 
 

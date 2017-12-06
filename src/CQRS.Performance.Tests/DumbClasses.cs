@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using CQRS.Core;
 using CQRS.Core.Query;
 
 namespace CQRS.Performance.Tests
