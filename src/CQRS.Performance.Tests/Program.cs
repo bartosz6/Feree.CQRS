@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using BenchmarkDotNet.Analysers;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
@@ -30,9 +31,9 @@ namespace CQRS.Performance.Tests
             config.Add(DefaultConfig.Instance.GetValidators().ToArray());
             config.Add(new MemoryDiagnoser());
             config.UnionRule = ConfigUnionRule.AlwaysUseGlobal;
-            
+
             var summary = BenchmarkRunner.Run<Program>();
-            
+
             var logger = ConsoleLogger.Default;
             MarkdownExporter.Console.ExportToLog(summary, logger);
             ConclusionHelper.Print(logger, config.GetCompositeAnalyser().Analyse(summary).ToList());
@@ -41,31 +42,47 @@ namespace CQRS.Performance.Tests
         [Benchmark(Description = "Dispatch sync")]
         public void DispatchTest()
         {
-            _queryDispatcher.Dispatch<DumbClasses.Query6, byte>(_queryToTest);
+            _queryDispatcher.Dispatch(_queryToTest);
         }
 
         [Benchmark(Description = "Dispatch async")]
         public void DispatchAsyncTest()
         {
-            _queryDispatcher.DispatchAsync<DumbClasses.Query10, byte>(_asyncQueryToTest);
+            _queryDispatcher.Dispatch(_asyncQueryToTest);
         }
 
         public Program()
         {
             _queryToTest = new DumbClasses.Query6();
             _asyncQueryToTest = new DumbClasses.Query10();
-            _queryDispatcher = new QueryDispatcher(
-                new DumbClasses.QueryHandler1(), 
-                new DumbClasses.QueryHandler2(),
-                new DumbClasses.QueryHandler3(),
-                new DumbClasses.QueryHandler4(),
-                new DumbClasses.QueryHandler5(),
-                new DumbClasses.QueryHandler6(),
-                new DumbClasses.QueryHandler7(),
-                new DumbClasses.QueryHandler8(),
-                new DumbClasses.AsyncQueryHandler1(),
-                new DumbClasses.QueryHandler9()
-                );
+            _queryDispatcher = new QueryDispatcher(query =>
+            {
+                switch (query)
+                {
+                    case DumbClasses.Query1 q:
+                        return new DumbClasses.QueryHandler1();
+                    case DumbClasses.Query2 q:
+                        return new DumbClasses.QueryHandler2();
+                    case DumbClasses.Query3 q:
+                        return new DumbClasses.QueryHandler3();
+                    case DumbClasses.Query4 q:
+                        return new DumbClasses.QueryHandler4();
+                    case DumbClasses.Query5 q:
+                        return new DumbClasses.QueryHandler5();
+                    case DumbClasses.Query6 q:
+                        return new DumbClasses.QueryHandler6();
+                    case DumbClasses.Query7 q:
+                        return new DumbClasses.QueryHandler7();
+                    case DumbClasses.Query8 q:
+                        return new DumbClasses.QueryHandler8();
+                    case DumbClasses.Query10 q:
+                        return new DumbClasses.AsyncQueryHandler1();
+                    case DumbClasses.Query9 q:
+                        return new DumbClasses.QueryHandler9();
+                    default:
+                        throw new InvalidOperationException();
+                }
+            });
         }
     }
 }

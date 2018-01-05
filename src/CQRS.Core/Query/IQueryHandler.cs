@@ -1,15 +1,11 @@
-﻿using System.Threading.Tasks;
-
-namespace CQRS.Core.Query
+﻿namespace CQRS.Core.Query
 {
-    public interface IAsyncQueryHandler<in TQuery, TResult> : IQueryHandler<TQuery, Task<TResult>> where TQuery : IQuery
+    public interface IQueryHandler
     {
     }
 
-    public interface IQueryHandler<in TQuery, out TResult> : IQueryHandler where TQuery : IQuery
+    public interface IAsyncQueryHandler : IQueryHandler
     {
-        TResult Handle(TQuery query);
+        
     }
-    
-    public interface IQueryHandler {}
 }

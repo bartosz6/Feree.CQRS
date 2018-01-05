@@ -1,47 +1,30 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace CQRS.Core.Query
 {
     public class QueryDispatcher : IQueryDispatcher
     {
-        private readonly ReadOnlyDictionary<Type, IQueryHandler> _queryHandlersDictionary;
+        private readonly Func<IQuery, IQueryHandler> _handlerProducer;
 
-        public QueryDispatcher(params IQueryHandler[] queryHandlers)
+        public QueryDispatcher(Func<IQuery, IQueryHandler> handlerProducer)
         {
-            var interfaceId = typeof(IQueryHandler<,>).GUID;
-            _queryHandlersDictionary = new ReadOnlyDictionary<Type, IQueryHandler>(
-                queryHandlers
-                    .Select(handler =>
-                        handler.GetType().GetTypeInfo().ImplementedInterfaces
-                            .Where(@interface => @interface.GUID == interfaceId)
-                            .Select(@interface => @interface.GetTypeInfo().GenericTypeArguments.First())
-                            .Select(queryType => (queryType, handler)))
-                    .SelectMany(_ => _)
-                    .GroupBy(x => x.queryType)
-                    .Select(x => x.Count() > 1
-                        ? throw new ArgumentException($"query handler for {x.Key.Name} has been already registered.")
-                        : x.AsEnumerable())
-                    .SelectMany(_ => _)
-                    .ToDictionary(key => key.queryType, value => value.handler));
+            _handlerProducer = handlerProducer;
         }
 
         [DebuggerStepThrough]
-        public TResult Dispatch<TQuery, TResult>(TQuery query) where TQuery : IQuery
+        public async Task<TResult> Dispatch<TResult>(IQuery<TResult> query)
         {
-            return _queryHandlersDictionary.ContainsKey(typeof(TQuery)) &&
-                   _queryHandlersDictionary[typeof(TQuery)] is IQueryHandler<TQuery, TResult> handler
-                ? handler.Handle(query)
-                : throw new InvalidOperationException(
-                    $"query handler for query<{typeof(TQuery).Name}, {typeof(TResult).Name}> not found");
+            switch (_handlerProducer(query))
+            {
+                case BaseQueryHandler<Task<TResult>> asynchronous:
+                    return await asynchronous.BaseHandle(query);
+                case BaseQueryHandler<TResult> synchronous:
+                    return synchronous.BaseHandle(query);
+                default:
+                    throw new InvalidOperationException($"handler for query {query.GetType().FullName} not found");
+            }
         }
-
-        [DebuggerStepThrough]
-        public Task<TResult> DispatchAsync<TQuery, TResult>(TQuery query) where TQuery : IQuery =>
-            Dispatch<TQuery, Task<TResult>>(query);
     }
 }
