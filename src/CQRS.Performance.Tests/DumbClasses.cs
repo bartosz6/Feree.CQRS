@@ -90,9 +90,11 @@ namespace CQRS.Performance.Tests
             protected override int Handle(Query9 query) => 0;
         }
 
+        private static readonly TaskFactory TaskFactory = new TaskFactory();
+        
         internal class AsyncQueryHandler1 : AsyncQueryHandler<Query10, int>
         {
-            protected override Task<int> Handle(Query10 query) => new TaskFactory().StartNew(() => 0);
+            protected override Task<int> Handle(Query10 query) => TaskFactory.StartNew(() => 0);
         }
     }
 }
